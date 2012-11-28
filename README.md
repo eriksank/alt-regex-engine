@@ -3,8 +3,8 @@ Alternative Regular Expression Engine
 
 NodeJS javascript library with an alternative compilation method for regular expressions.
 
-Installation
-------------
+1. Installation
+---------------
 
 alt-regex-engine can be installed for [Node](http://nodejs.org) using [`npm`](http://github.com/isaacs/npm/).
 
@@ -13,8 +13,8 @@ Using npm:
     npm install alt-regex-engine
 
 
-Introduction
-------------
+2. Introduction
+---------------
 
 In order to execute a regular expression, the expression needs to be compiled into a set of state-transitions. For example, let us investigate the following regular expression:
 
@@ -77,14 +77,14 @@ Such state-transition table is traditionally also called a **DFA**, a [Determini
 In other words, the function `newState(currentState,character)` returns a single state number for a DFA and not an array of them. When the function `newState` could return an array instead of a single number, it is not a DFA but an [NFA](http://en.wikipedia.org/wiki/Nondeterministic_finite_automata).
 
 
-Kleene operators
-----------------
+3. Kleene operators
+-------------------
 
 In his work throughout the 1950s, [Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Kleene) introduced the concept of regular language operators. 
 
 _Note: Let's represent nothing by something: Traditionally, we represent nothing by `ε`. It stands for: nothing at all. So, yes, it is a bit paradoxical that we need something to represent nothing._
 
-###Kleene Star: zero or more repetitions of a pattern
+###3.1. Kleene Star: zero or more repetitions of a pattern
 
 <table>
         <tr>
@@ -102,7 +102,7 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
 </table>
 
 
-###Kleene Plus: One or more repetitions of a pattern
+###3.2. Kleene Plus: One or more repetitions of a pattern
 
 <table>
         <tr>
@@ -119,7 +119,7 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
 </table>
 
 
-###Kleene Option: Zero or one times the pattern
+###3.3. Kleene Option: Zero or one times the pattern
 
 <table>
         <tr>
@@ -134,7 +134,7 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
 </table>
 
 
-###Kleene OR: One pattern or another
+###3.4. Kleene OR: One pattern or another
 
 <table>
         <tr>
@@ -149,8 +149,8 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
 </table>
 
 
-State transitions in the presence of Kleene operators
------------------------------------------------------
+4. State transitions in the presence of Kleene operators
+--------------------------------------------------------
 
 Let us investigate the following regular expression:
 
@@ -218,10 +218,10 @@ The result is an NFA. Using a simple disambiguation technique (see below), you c
         {"from":5,"char":"a","to":2,"final":false}
 
 
-Compilation steps
------------------
+5. Compilation steps
+--------------------
 
-###lexer
+###5.1. lexer
 
 The lexer is a simple program that accepts a regular expression as input and returns a set of tokens as output. The tokens are either a state or a character. For example:
 
@@ -231,7 +231,7 @@ becomes:
 
         [0]  r  (  [1]  a  [2]  b  )  *  [3]  c  [4]F
 
-###parser
+###5.2. parser
 
 The parser removes all subexpressions in brackets from the expression or its subexpressions and replaces them by an expression token. For example:
 
@@ -262,7 +262,7 @@ With the collection of stored expressions:
         1: [2]  a  [3]  b 
         2: [1]  t  exp1  *  [4]  y 
 
-###flattener
+###5.3. flattener
 
 The main algorithm to compute the NFA is the `flattener`. It works as following. It takes as input the parsed expression. From there, it looks for Kleene operators. If it finds one, it reduces the operator using the reduction rules and stores the new expressions in a queue; and starts processing the queue again. If it cannot find operators in a queued expression, it brings back the subexpressions it finds and puts the expression back in the queue. The flattener keeps processing the queue until no operators nor expressions can be found in an expression. Then, it is ready to leave the queue and joined the flattened expressions.
 
@@ -278,7 +278,7 @@ The flattened expressions look like this:
         [0]  r  [1]  t  [4]  y  [5]F 
         [0]  r  [1]  t  [2]  a  [3]  b  [2]  a  [3]  b  [4]  y  [5]F 
 
-###transition deriver
+###5.4. transition deriver
 
 The `transition deriver` will just go through each flattened expression and produce the transitions. For example:
 
@@ -304,7 +304,7 @@ The NFA transitions look like this:
         {"from":0,"char":"r","to":1,"final":false}
         {"from":1,"char":"t","to":2,"final":false}
 
-###transition compressor
+###5.5. transition compressor
 
 In order to prepare the disambiguation of the NFA into a DFA, the `transition compressor` will create one record per combination of `from/char`:
 
@@ -315,7 +315,7 @@ In order to prepare the disambiguation of the NFA into a DFA, the `transition co
         {"from":0,"char":"r","to":[{"to":1,"final":false}]}
 
 
-###transition disambiguator
+###5.6. transition disambiguator
 
 The example contains two ambiguous transitions. For example, the following transition:
 
@@ -342,7 +342,7 @@ After disambiguating all ambiguous transitions, we end with the following disamb
         {"from":6,"char":"y","to":[{"to":5,"final":true}],"fromIsNewState":true,"combination":[2,4]}
         {"from":6,"char":"a","to":[{"to":3,"final":false}],"fromIsNewState":true,"combination":[2,4]}
 
-###transition purger
+###5.7. transition purger
 
 The `transition purger` simply removes the transition fields that were only needed for disambiguation and are no longer needed any further:
 
@@ -357,8 +357,8 @@ The `transition purger` simply removes the transition fields that were only need
 The transition purger yields the final DFA.
 
 
-Using the transitions to match
-------------------------------
+6. Using the transitions to match
+---------------------------------
 
 In the test folder in the demonstration library, you can find a simplistic walker implementation that matches a regular expression pattern to a given text:
 
@@ -371,14 +371,14 @@ In the test folder in the demonstration library, you can find a simplistic walke
         text: trbtr           match: b
         text:                 match: 
 
-Performance
------------
+7. Performance
+--------------
 
 It is probably a bit naive to state that the compilation time increases with the size of the regular expression pattern. This is not really true. Performance degrades expecially with the complexity of the expressions. The more Kleene operators -- embedded in subexpressions or not -- the larger the number of flattened expressions to compute. I do not think that this is a property tied to this algorithm. It is tied to the fact that the more operators there can be found in the expression, the more transitions there will be to derive.
 
 
-License
--------
+8. License
+----------
 	Copyright (c) 2012 Erik Poupaert.
 	Licensed under the Library General Public License (LGPL).
 
