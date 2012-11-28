@@ -80,7 +80,7 @@ In other words, the function `newState(currentState,character)` returns a single
 Kleene operators
 ----------------
 
-In his work throughout the 1950s, [Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Kleene) introduced his concept of regular language operators. 
+In his work throughout the 1950s, [Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Kleene) introduced the concept of regular language operators. 
 
 _Note: Let's represent nothing by something: Traditionally, we represent nothing by `ε`. It stands for: nothing at all. So, yes, it is a bit paradoxical that we need something to represent nothing._
 
@@ -134,7 +134,7 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
 </table>
 
 
-###Kleene OR: One pattern or an other
+###Kleene OR: One pattern or another
 
 <table>
         <tr>
@@ -189,20 +189,20 @@ For the example, computing the transitions in:
 
         [0] r( [1] a [2] b)* [3] c [4]F
 
-amounts to computing the transitions in:
+amounts to computing the transitions in the following `flattened expressions`:
 
         [0] r [3] c [4]F
         [0] r [1] a [2] b [1] a [2] b [3] c [4]F
         [0] r [1] a [2] b [1] a [2] b [3] [1] a [2] b [3] c [4]F
 
-It is equivalent.
+The results are equivalent to computing them on the full expression.
 
 The program in Javascript for NodeJS is a practical demonstration for the statement that we can compute Kleene's closure by applying systematically the reduction rules mentioned above. Using the simple technique demonstrated in the first example, you can derive manually the following transitions:
 
-        {"from":2,"char":"b","to":3,"final":false}
         {"from":2,"char":"b","to":1,"final":false}
         {"from":0,"char":"r","to":3,"final":false}
         {"from":0,"char":"r","to":1,"final":false}
+        {"from":2,"char":"b","to":3,"final":false}
         {"from":1,"char":"a","to":2,"final":false}
         {"from":3,"char":"c","to":4,"final":true}
 
@@ -264,7 +264,7 @@ With the collection of stored expressions:
 
 The main algorithm to compute the NFA is the `flattener`. It works as following. It takes as input the parsed expression. From there, it looks for Kleene operators. If it finds one, it reduces the operator using the reduction rules and stores the new expressions in a queue; and starts processing the queue again. If it cannot find operators in a queued expression, it brings back the subexpressions it finds and puts the expression back in the queue. The flattener keeps processing the queue until no operators nor expressions can be found in an expression. Then, it is ready to leave the queue and joined the flattened expressions.
 
-Contrary to [Thompson's classical algorithm](http://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf), my algorithm does not use a stack but a queue. I do not know, however, without further investigation whether it is actually faster than the [Thompson-McNaughton-Yamada approach](http://hackingoff.com/compilers/regular-expression-to-nfa-dfa).
+Contrary to [Thompson's classical algorithm](http://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf), my algorithm does not use a stack but a queue. I do not know, however, without further investigation whether it is actually any faster than the [Thompson-McNaughton-Yamada approach](http://hackingoff.com/compilers/regular-expression-to-nfa-dfa).
 
 For the example:
 
@@ -284,9 +284,9 @@ The `transition deriver` will just go through each flattened expression and prod
 
 yields the transition:
 
-        **state/from**: 1
-        **character**: t 
-        **state/to**: 2
+        state/from: 1
+        character: t 
+        state/to: 2
 
 For the example:
 
@@ -319,13 +319,13 @@ The example contains two ambiguous transitions. For example, the following trans
 
         {"from":3,"char":"b","to":[{"to":4,"final":false},{"to":2,"final":false}]}
 
-indicates two different states, `state [4]` and `state [2]` that can be reached by the walker when he sees a char `b` in `state [3]`. Therefore, the walker will reach a combined `state [6]`, which is the combination of both `state [2]` and `state [4]`.
+indicates two different states, `state [4]` and `state [2]` that can be reached by the walker when he sees a char `b` in `state [3]`. Therefore, the walker will reach a new, combined `state [6]`, which is the combination of both `state [2]` and `state [4]`.
 
-The disambiguator will replace the transition by:
+The disambiguator will replace the transition itself by:
 
         {"from":3,"char":"b","to":[{"to":6,"final":false,"combined":true}]}
 
-Since neither `state [4]` nor `state [2]` are final states, the new state is not final either. All transitions departing from either `state [2]` or `state [4]` will depart from `state [6]` too. Therefore, the disambiguator creates the following new transitions out form `state [6]`:
+Since neither `state [4]` nor `state [2]` are final states, the new state is not final either. All transitions departing from either `state [2]` or `state [4]` will also depart from `state [6]`. Therefore, the disambiguator creates the following new transitions out from `state [6]`:
 
         {"from":6,"char":"y","to":[{"to":5,"final":true}],"fromIsNewState":true,"combination":[2,4]}
         {"from":6,"char":"a","to":[{"to":3,"final":false}],"fromIsNewState":true,"combination":[2,4]}
@@ -358,7 +358,7 @@ The purger yields the final DFA.
 Using the transitions to match
 ------------------------------
 
-In the test folder for the demonstration library, you can find a simplistic walker implementation that matches a regular expression pattern to a given text:
+In the test folder in the demonstration library, you can find a simplistic walker implementation that matches a regular expression pattern to a given text:
 
         $ ./test-walking.js 
         pattern: (ax)*b
