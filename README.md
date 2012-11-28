@@ -179,11 +179,13 @@ It is this property that allows for a simplification of [Glushkov's algorithm](h
 
 In general terms, we can state that the following reduction rules apply to Kleene operators:
 
-        (ab)*   ε  ab  abab
-        (ab)+      ab  abab
-        (ab)?   ε  ab 
+        operator        alternative rules
 
-We can compute the transitions in an expression containing a Kleene operator by computing the transitions its reduced rules.
+        (ab)*           ε  ab  abab
+        (ab)+              ab  abab
+        (ab)?           ε  ab 
+
+We can compute the transitions in an expression containing a Kleene operator by computing the transitions for its reduced rules.
 
 For the example, computing the transitions in:
 
