@@ -374,7 +374,7 @@ In the test folder in the demonstration library, you can find a simplistic walke
 7. Performance
 --------------
 
-It is probably a bit naive to state that the compilation time increases with the size of the regular expression pattern. This is not really true. Performance degrades expecially with the complexity of the expressions. The more Kleene operators -- embedded in subexpressions or not -- the larger the number of flattened expressions to compute. I do not think that this is a property tied to this algorithm. It is tied to the fact that the more operators there can be found in the expression, the more transitions there will be to derive.
+It is probably a bit naive to state that the compilation time increases with the size of the regular expression pattern. This is not really true. Performance degrades especially with the complexity of the expressions. The more Kleene operators -- embedded in subexpressions or not -- the larger the number of flattened expressions to compute. I do not think that this is a property tied to this algorithm. It is tied to the fact that the more operators there can be found in the expression, the more transitions there will be to derive.
 
 
 8. License
