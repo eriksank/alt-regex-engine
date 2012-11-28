@@ -85,20 +85,22 @@ In his work throughout the 1950s, [Stephen Kleene](http://en.wikipedia.org/wiki/
 _Note: Let's represent nothing by something: Traditionally, we represent nothing by `ε`. It stands for: nothing at all. So, yes, it is a bit paradoxical that we need something to represent nothing._
 
 ###Kleene Star: zero or more repetitions of a pattern
+
 <table>
         <tr>
                 <td>
                         (ab)*
                 </td>        
                 <td>
-                        ε
-                        ab
-                        abab
-                        ababab
-                        abababab ...
+                        ε<br/>
+                        ab<br/>
+                        abab<br/>
+                        ababab<br/>
+                        abababab ...<br/>
                 </td>
         </tr>
 </table>
+
 
 ###Kleene Plus: One or more repetitions of a pattern
 
@@ -108,13 +110,14 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
                         (ab)+
                 </td>
                 <td>
-                        ab
-                        abab
-                        ababab
-                        abababab ...
+                        ab<br/>
+                        abab<br/>
+                        ababab<br/>
+                        abababab ...<br/>
                 </td>
         </tr>
 </table>
+
 
 ###Kleene Option: Zero or one times the pattern
 
@@ -124,11 +127,12 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
                         (ab)?
                 </td>
                 <td>
-                        ε
-                        ab
+                        ε<br/>
+                        ab<br/>
                 </td>
         </tr>
 </table>
+
 
 ###Kleene OR: One pattern or an other
 
@@ -138,15 +142,12 @@ _Note: Let's represent nothing by something: Traditionally, we represent nothing
                         (ab|cd)
                 </td>
                 <td>
-                        ab
-                        cd
+                        ab<br/>
+                        cd<br/>
                 </td>
         </tr>
 </table>
 
-        ab|cd
-                ab
-                cd
 
 State transitions in the presence of Kleene operators
 -----------------------------------------------------
