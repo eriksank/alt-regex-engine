@@ -1,6 +1,6 @@
 {
   "name": "alt-regex-engine",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Alternative compilation method for regular expressions",
   "author": {
     "name": "Erik Poupaert",
@@ -19,7 +19,7 @@
     "regular expressions"
   ],
   "license": "LGPL",
-  "_id": "alt-regex-engine@0.1.5",
+  "_id": "alt-regex-engine@0.1.6",
   "dependencies": {},
   "devDependencies": {},
   "optionalDependencies": {},
