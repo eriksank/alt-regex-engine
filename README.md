@@ -342,9 +342,9 @@ After disambiguating all ambiguous transitions, we end with the following disamb
         {"from":6,"char":"y","to":[{"to":5,"final":true}],"fromIsNewState":true,"combination":[2,4]}
         {"from":6,"char":"a","to":[{"to":3,"final":false}],"fromIsNewState":true,"combination":[2,4]}
 
-###purger
+###transition purger
 
-The `purger` simply removes the transition fields that were only needed for disambiguation and are no longer needed any further:
+The `transition purger` simply removes the transition fields that were only needed for disambiguation and are no longer needed any further:
 
         {"from":2,"char":"a","to":3,"final":false}
         {"from":4,"char":"y","to":5,"final":true}
@@ -354,7 +354,7 @@ The `purger` simply removes the transition fields that were only needed for disa
         {"from":6,"char":"y","to":5,"final":true}
         {"from":6,"char":"a","to":3,"final":false}
 
-The purger yields the final DFA.
+The transition purger yields the final DFA.
 
 
 Using the transitions to match
