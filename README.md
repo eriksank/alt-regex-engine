@@ -1,12 +1,12 @@
-Alternative Regular Expression Compilation Engine
-=================================================
+Alternative Regular Expression Engine
+=====================================
 
 NodeJS javascript library with an alternative compilation method for regular expressions.
 
 Installation
 ------------
 
-AltRegexEngine can be installed for [Node](http://nodejs.org) using [`npm`](http://github.com/isaacs/npm/).
+alt-regex-engine can be installed for [Node](http://nodejs.org) using [`npm`](http://github.com/isaacs/npm/).
 
 Using npm:
 
@@ -16,7 +16,7 @@ Using npm:
 Introduction
 ------------
 
-In order to execute a regular expression, it needs to be compiled into a set of state-transitions. For example, let us investigate the following regular expression:
+In order to execute a regular expression, the expression needs to be compiled into a set of state-transitions. For example, let us investigate the following regular expression:
 
         a b c d
 
@@ -82,20 +82,20 @@ Kleene operators
 
 In his work throughout the 1950s, [Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Kleene) introduced his concept of regular language operators. 
 
-_Note_: Let's represent nothing by something: Traditionally, we represent nothing by `ε`. It stands for: nothing at all. So, yes, it is a bit paradoxical, we need something to represent nothing.
+_Note: Let's represent nothing by something: Traditionally, we represent nothing by `ε`. It stands for: nothing at all. So, yes, it is a bit paradoxical that we need something to represent nothing._
 
 ###Kleene Star: zero or more repetitions of a pattern
 <table>
         <tr>
                 <td>
                         (ab)*
-                </td>
+                </td>        
+                <td>
                         ε
                         ab
                         abab
                         ababab
                         abababab ...
-                <td>
                 </td>
         </tr>
 </table>
@@ -107,11 +107,11 @@ _Note_: Let's represent nothing by something: Traditionally, we represent nothin
                 <td>
                         (ab)+
                 </td>
+                <td>
                         ab
                         abab
                         ababab
                         abababab ...
-                <td>
                 </td>
         </tr>
 </table>
@@ -123,9 +123,9 @@ _Note_: Let's represent nothing by something: Traditionally, we represent nothin
                 <td>
                         (ab)?
                 </td>
+                <td>
                         ε
                         ab
-                <td>
                 </td>
         </tr>
 </table>
@@ -137,9 +137,9 @@ _Note_: Let's represent nothing by something: Traditionally, we represent nothin
                 <td>
                         (ab|cd)
                 </td>
+                <td>
                         ab
                         cd
-                <td>
                 </td>
         </tr>
 </table>
