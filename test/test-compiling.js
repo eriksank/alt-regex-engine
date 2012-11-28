@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/*
+	Alternative Regular Expression Engine
+	Written by Erik Poupaert, November 2012
+	Licensed under the Library General Public License (LGPL).
+
+*/
 
 var patterns=[
         'k?|bla'
@@ -23,6 +29,8 @@ var patterns=[
         ,'a(b|c)d'
 	,'ab|cd'
         ,'abcd'
+        ,'r(ab)*c'
+        ,'r(t(ab)*y)'
 ];
 var altRegexEngine=require('../lib/alt-regex-engine');
 var engine=new altRegexEngine(true);
